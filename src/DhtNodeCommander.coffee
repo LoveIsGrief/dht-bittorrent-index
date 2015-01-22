@@ -1,18 +1,16 @@
 argv = require 'node-argv'
 _ = require "underscore"
+Commander = require('commander').Command
 
 class DhtNodeCommander
+
+	constructor: (@dhtNode) ->
+		@program = new Commander
 
 	###
 	Sets up the commands a node will handle,
 	which `node.method` will be called and which method the result will be passed to
 	###
-	constructor: (@dhtNode) ->
-
-		# method = console.log if !method
-
-		@program = require 'commander'
-
 	init: (method)->
 		@program
 		.command("search <query>")
