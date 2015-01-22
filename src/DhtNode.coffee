@@ -9,17 +9,20 @@ class DhtNode
 	###
 	Searches the map keys for the given keys
 
-	@returns Array of key-value pairs (KVPs) that match the query
 	###
-	search: (query) ->
+	Searches the map keys for the given keys
+	@returns {Object} with filtered keys that match the query
+	###
+	search: (query) =>
 		# pick keys that start with <query>
-		_.pick @map,
+		res = _.pick @map,
 			Object.keys(@map).filter functional.func "startsWith", query
+		return res
 
 	###
-	@returns Object All KVPs this node has
+	@returns {Object} All KVPs this node has
 	###
-	getIndex: ->
+	getIndex: =>
 		@map
 
 module.exports = DhtNode

@@ -1,17 +1,25 @@
 argv = require 'node-argv'
+_ = require "underscore"
 
 class DhtNodeCommander
-	constructor: (@dhtNode) ->
+
+	###
+	Sets up the commands a node will handle,
+	which `node.method` will be called and which method the result will be passed to
+	###
+	constructor: (dhtNode, method) ->
+
+		# method = console.log if !method
+
 		@program = require 'commander'
-		#
 		@program
 		.command("search <query>")
-		.action @dhtNode.search
+		.action _.compose(method, dhtNode.search)
 
 		#
 		@program
 		.command("getIndex")
-		.action @dhtNode.getIndex
+		.action _.compose(method, dhtNode.getIndex)
 
 
 	parseCommand: (input) =>
