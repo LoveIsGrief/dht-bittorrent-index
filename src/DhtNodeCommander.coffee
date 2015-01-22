@@ -11,7 +11,8 @@ class DhtNodeCommander
 	Sets up the commands a node will handle,
 	which `node.method` will be called and which method the result will be passed to
 	###
-	init: (method)->
+	init: (method = console.log)->
+
 		@program
 		.command("search <query>")
 		.action _.compose(method, @dhtNode.search)
