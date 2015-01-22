@@ -22,9 +22,10 @@ class DhtNode
 	@returns {Object} with filtered keys that match the query
 	###
 	search: (query) =>
-		# pick keys that start with <query>
+		# pick keys that have values starting with <query>
 		res = _.pick @map,
-			Object.keys(@map).filter functional.func "startsWith", query
+			Object.keys(@map).filter (key)=>
+				@map[key].startsWith query
 		return res
 
 	###
