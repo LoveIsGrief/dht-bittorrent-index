@@ -16,10 +16,10 @@ A distributed index of torrents.
 Each node has a hashmap of
 ```json
 {
-	"<torrent name1>": "<magnet link1>",
-	"<torrent name2>": "<magnet link2>",
+	"<infohash1>": "<torrent name1>",
+	"<infohash2>": "<torrent name2>",
 	// ...
-	"<torrent nameN>": "<magnet linkN>",
+	"<infohashN>": "<torrent nameN>",
 }
 
 
