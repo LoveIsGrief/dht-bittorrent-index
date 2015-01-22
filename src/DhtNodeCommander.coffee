@@ -7,19 +7,21 @@ class DhtNodeCommander
 	Sets up the commands a node will handle,
 	which `node.method` will be called and which method the result will be passed to
 	###
-	constructor: (dhtNode, method) ->
+	constructor: (@dhtNode) ->
 
 		# method = console.log if !method
 
 		@program = require 'commander'
+
+	init: (method)->
 		@program
 		.command("search <query>")
-		.action _.compose(method, dhtNode.search)
+		.action _.compose(method, @dhtNode.search)
 
 		#
 		@program
 		.command("getIndex")
-		.action _.compose(method, dhtNode.getIndex)
+		.action _.compose(method, @dhtNode.getIndex)
 
 
 	parseCommand: (input) =>
