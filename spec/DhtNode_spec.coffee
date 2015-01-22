@@ -42,16 +42,18 @@ describe "DhtNode", ->
 
 			# Disconnect client and server
 			afterEach (done)->
+				port = @socket.localPort
 				@socket.on "end", ->
+					logger.debug "closed socket: #{port}"
 					done()
+				@socket.end()
 				@node.end()
 
 			it "should respond to getIndex", (done) ->
-				index = JSON.stringify @node.map
-
+				expectedIndex = JSON.stringify @node.map
 				@socket.on "data", (buffer)=>
 					data = buffer.toString()
-					expect(data).toEqual index
+					expect(data).toEqual expectedIndex
 					done()
 
 				@socket.write "getIndex"
@@ -65,7 +67,7 @@ describe "DhtNode", ->
 				@socket.on "data", (buffer)=>
 
 					received = buffer.toString()
-					expect(reveiced).toEqual expected
+					expect(received).toEqual expected
 					done()
 
 				@socket.write "search h"
