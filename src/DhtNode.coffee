@@ -1,8 +1,10 @@
 require "sugar"
 _ = require "underscore"
 config = require '../config/config'
+DhtNodeCommander = require "./DhtNodeCommander"
 functional = require "./functional"
 log4js = require "log4js"
+net = require "net"
 
 logger = log4js.getLogger("DhtNode")
 logger.setLevel config.logLevel
@@ -14,13 +16,52 @@ class DhtNode
 	constructor: ()->
 		@map = {}
 		@server = null
+		@commander = null
 
 	###
 	Starts the server on the given interface and port
-	@param interface
-	@param port
+
+	Configures it to attempt to execute commands and
+	return their results in JSON format
+
+	@param interface {String} Which interface to listen on
+	@param port {Integer} Which port to listen on
+	@param callback {Object} To call once the server is listening
 	###
-	start: (@interface,@port)->
+	start: (@interface,@port, callback)->
+
+		@commander = new DhtNodeCommander @
+		logger.debug "Going to create a server"
+		@server = net.createServer (socket)=>
+
+			socketString = "#{socket.remoteAddress}:#{socket.remotePort}"
+			logger.debug "Connection from #{socketString}"
+
+			# Handle successfully parsed data
+			@commander.init (result)=>
+				ret = JSON.stringify result
+				logger.debug "Sending back data (to:#{socketString})", ret
+				socket.write ret
+
+			# Parse incoming data
+			socket.on "data", (buffer)=>
+				input = buffer.toString()
+				logger.debug "[#{socketString}]Got input data: ", input
+				@commander.parseCommand input
+
+		@server.listen @port, @interface, ->
+			callback()
+			logger.debug "Created server"
+
+
+	end: ->
+		if @server
+			serverString = @server.address()
+			serverString = "#{serverString.address}:#{serverString.port}"
+			@server.on "close", =>
+				logger.debug "Closed server: ", serverString
+			@server.close()
+			logger.debug "Waiting for server to close..."
 
 	###
 	Searches the map keys for the given keys
