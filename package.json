@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A way to share torrents themselves and build an index thereof.",
   "main": "server.coffee",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,7 +17,6 @@
   "dependencies": {
     "coffee-script": "^1.8.0",
     "commander": "^2.6.0",
-    "es6-shim": "^0.22.2",
     "node-argv": "0.0.7",
     "sugar": "^1.4.1",
     "underscore": "^1.7.0"
