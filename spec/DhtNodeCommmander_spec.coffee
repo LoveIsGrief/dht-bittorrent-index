@@ -15,8 +15,13 @@ describe "DhtNodeCommander" , ->
 				"rate": "8/8"
 			}
 			spyOn @node, "search"
+			spyOn @node, "getIndex"
 			@dhc = new DhtNodeCommander @node
 
 		it "should search when commanded to" , ->
 			@dhc.parseCommand "search h"
 			expect(@node.search).toHaveBeenCalled()
+
+		it "should getIndex when commanded to" , ->
+			@dhc.parseCommand "getIndex"
+			expect(@node.getIndex).toHaveBeenCalled()
