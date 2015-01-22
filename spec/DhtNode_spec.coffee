@@ -1,5 +1,10 @@
 net = require "net"
-DhtNode = require '../src/DhtNode'
+log4js = require "log4js"
+DhtNode = require "../src/DhtNode"
+config = require "../config/config"
+
+logger = log4js.getLogger "DhtNode_spec"
+logger.setLevel config.logLevel
 
 describe "DhtNode", ->
 

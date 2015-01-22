@@ -1,6 +1,11 @@
 require "sugar"
 _ = require "underscore"
+config = require '../config/config'
 functional = require "./functional"
+log4js = require "log4js"
+
+logger = log4js.getLogger("DhtNode")
+logger.setLevel config.logLevel
 
 ###
 A P2P node that can listen to a port on an interface and react to commands given to it by clients.

@@ -17,6 +17,7 @@
   "dependencies": {
     "coffee-script": "^1.8.0",
     "commander": "^2.6.0",
+    "log4js": "^0.6.22",
     "node-argv": "0.0.7",
     "sugar": "^1.4.1",
     "underscore": "^1.7.0"
