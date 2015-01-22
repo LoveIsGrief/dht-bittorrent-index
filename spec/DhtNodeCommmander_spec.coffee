@@ -20,7 +20,8 @@ describe "DhtNodeCommander" , ->
 			holdResult = (result) =>
 				@result = result
 
-			@dhc = new DhtNodeCommander @node, holdResult
+			@dhc = new DhtNodeCommander @node
+			@dhc.init holdResult
 
 		it "should search when commanded to" , ->
 			@dhc.parseCommand "search h"
