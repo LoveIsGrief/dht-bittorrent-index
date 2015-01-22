@@ -2,12 +2,20 @@ require "sugar"
 _ = require "underscore"
 functional = require "./functional"
 
+###
+A P2P node that can listen to a port on an interface and react to commands given to it by clients.
+###
 class DhtNode
 	constructor: ()->
 		@map = {}
+		@server = null
 
 	###
-	Searches the map keys for the given keys
+	Starts the server on the given interface and port
+	@param interface
+	@param port
+	###
+	start: (@interface,@port)->
 
 	###
 	Searches the map keys for the given keys
