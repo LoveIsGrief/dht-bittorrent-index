@@ -5,10 +5,12 @@ describe 'DhtNode', ->
 	beforeEach ->
 		@node = new DhtNode()
 		@node.map = {
-			"lol": "herp"
-			"damn": "derp"
+			"infohashHerp": "herp"
+			"infohashHerpaDerp": "herpderpa"
+			"infohashDerp": "derp"
+			"infohashLol": "lol"
 		}
 
 	describe "#search", ->
 		it "should search for items", ->
-			expect(@node.search "l").toEqual { "lol": "herp" }
+			expect(@node.search "l").toEqual { "infohashLol": "lol" }

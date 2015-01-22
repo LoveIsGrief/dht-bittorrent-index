@@ -8,11 +8,11 @@ describe "DhtNodeCommander" , ->
 		beforeEach ->
 			@node = new DhtNode
 			@node.map = {
-				"herp": "derp"
-				"lol": "whatever"
-				"lmao": "wtf!?!?!"
-				"mate": "g'day"
-				"rate": "8/8"
+				"infohashHerp" : "herp"
+				"infohashLol" : "lol"
+				"infohashLmao" : "lmao"
+				"infohashMate" : "mate"
+				"infohashRate" : "rate"
 			}
 			spyOn(@node, "search").and.callThrough()
 			spyOn(@node, "getIndex").and.callThrough()
@@ -25,7 +25,7 @@ describe "DhtNodeCommander" , ->
 		it "should search when commanded to" , ->
 			@dhc.parseCommand "search h"
 			expect(@node.search).toHaveBeenCalled()
-			expect(@result).toEqual { "herp": "derp" }
+			expect(@result).toEqual { "infohashHerp" : "herp" }
 
 		it "should getIndex when commanded to" , ->
 			@dhc.parseCommand "getIndex"
