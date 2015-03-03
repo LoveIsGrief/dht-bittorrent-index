@@ -13,14 +13,14 @@ class DhtNodeCommander
 	###
 	init: (method = console.log)->
 
-		@program
-		.command("search <query>")
-		.action _.compose(method, @dhtNode.search)
-
 		#
 		@program
-		.command("getIndex")
-		.action _.compose(method, @dhtNode.getIndex)
+		.command("getTorrentIndex")
+		.action _.compose(method, @dhtNode.getTorrentIndex)
+
+		@program
+		.command("getNodeIndex")
+		.action _.compose(method, @dhtNode.getNodeIndex)
 
 
 	parseCommand: (input) =>
