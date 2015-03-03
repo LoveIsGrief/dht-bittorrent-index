@@ -15,6 +15,7 @@ A P2P node that can listen to a port on an interface and react to commands given
 class DhtNode
 	constructor: ()->
 		@torrentMap = {}
+		@nodeMap = {}
 		@server = null
 		@commander = null
 
@@ -75,9 +76,17 @@ class DhtNode
 		return res
 
 	###
-	@returns {Object} All KVPs this node has
+	@returns {Object} All torrent KVPs this node has
 	###
 	getTorrentIndex: =>
 		@torrentMap
+
+	###
+	@returns {Object} All node KVPs this node has
+	###
+	getNodeIndex: =>
+		@nodeMap
+
+
 
 module.exports = DhtNode
