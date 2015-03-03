@@ -49,3 +49,9 @@ describe "DhtNodeCommander" , ->
 
 			it "should respond to the call", ->
 				expect(@node.getNodeIndex).toBeDefined()
+
+			it "should getNodeIndex when commanded to", ->
+				@dhc.parseCommand "getNodeIndex"
+				expect(@node.getNodeIndex).toHaveBeenCalled()
+				expect(@result).toBe @node.nodeMap
+

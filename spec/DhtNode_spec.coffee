@@ -16,6 +16,12 @@ describe "DhtNode", ->
 			"infohashDerp": "derp"
 			"infohashLol": "lol"
 		}
+		node.nodeMap = {
+			"localhost": 9999
+			"torrentz.eu": 9999
+			"thepiratebay.org": 9999
+			"isohunt.com": 9999
+		}
 		return node
 
 	describe "network" , ->
@@ -41,7 +47,7 @@ describe "DhtNode", ->
 				@socket.end()
 				@node.end()
 
-			it "should respond to getIndex", (done) ->
+			it "should respond to getTorrentIndex", (done) ->
 				expectedIndex = JSON.stringify @node.torrentMap
 				@socket.on "data", (buffer)=>
 					data = buffer.toString()
@@ -49,3 +55,12 @@ describe "DhtNode", ->
 					done()
 
 				@socket.write "getTorrentIndex"
+
+			it "should respond to getNodeIndex", (done) ->
+				expectedIndex = JSON.stringify @node.nodeMap
+				@socket.on "data", (buffer)=>
+					data = buffer.toString()
+					expect(data).toEqual expectedIndex
+					done()
+
+				@socket.write "getNodeIndex"

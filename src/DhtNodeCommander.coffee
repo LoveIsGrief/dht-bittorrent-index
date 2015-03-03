@@ -18,6 +18,10 @@ class DhtNodeCommander
 		.command("getTorrentIndex")
 		.action _.compose(method, @dhtNode.getTorrentIndex)
 
+		@program
+		.command("getNodeIndex")
+		.action _.compose(method, @dhtNode.getNodeIndex)
+
 
 	parseCommand: (input) =>
 		# expects argv so we simulate it
