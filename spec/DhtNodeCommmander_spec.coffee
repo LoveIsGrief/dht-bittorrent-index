@@ -7,15 +7,14 @@ describe "DhtNodeCommander" , ->
 
 		beforeEach ->
 			@node = new DhtNode
-			@node.map = {
+			@node.torrentMap = {
 				"infohashHerp" : "herp"
 				"infohashLol" : "lol"
 				"infohashLmao" : "lmao"
 				"infohashMate" : "mate"
 				"infohashRate" : "rate"
 			}
-			spyOn(@node, "search").and.callThrough()
-			spyOn(@node, "getIndex").and.callThrough()
+			spyOn(@node, "getTorrentIndex").and.callThrough()
 
 			holdResult = (result) =>
 				@result = result
@@ -23,12 +22,7 @@ describe "DhtNodeCommander" , ->
 			@dhc = new DhtNodeCommander @node
 			@dhc.init holdResult
 
-		it "should search when commanded to" , ->
-			@dhc.parseCommand "search h"
-			expect(@node.search).toHaveBeenCalled()
-			expect(@result).toEqual { "infohashHerp" : "herp" }
-
-		it "should getIndex when commanded to" , ->
-			@dhc.parseCommand "getIndex"
-			expect(@node.getIndex).toHaveBeenCalled()
-			expect(@result).toBe @node.map
+		it "should getTorrentIndex when commanded to" , ->
+			@dhc.parseCommand "getTorrentIndex"
+			expect(@node.getTorrentIndex).toHaveBeenCalled()
+			expect(@result).toBe @node.torrentMap

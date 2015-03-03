@@ -10,21 +10,13 @@ describe "DhtNode", ->
 
 	createNode= ->
 		node = new DhtNode()
-		node.map = {
+		node.torrentMap = {
 			"infohashHerp": "herp"
 			"infohashHerpaDerp": "herpderpa"
 			"infohashDerp": "derp"
 			"infohashLol": "lol"
 		}
 		return node
-
-	describe "#search", ->
-
-		beforeEach ->
-			@node = createNode()
-
-		it "should search for items", ->
-			expect(@node.search "l").toEqual { "infohashLol": "lol" }
 
 	describe "network" , ->
 
@@ -50,24 +42,10 @@ describe "DhtNode", ->
 				@node.end()
 
 			it "should respond to getIndex", (done) ->
-				expectedIndex = JSON.stringify @node.map
+				expectedIndex = JSON.stringify @node.torrentMap
 				@socket.on "data", (buffer)=>
 					data = buffer.toString()
 					expect(data).toEqual expectedIndex
 					done()
 
-				@socket.write "getIndex"
-
-			it "should respond to search", (done) ->
-				expected = JSON.stringify {
-						"infohashHerp": "herp"
-						"infohashHerpaDerp": "herpderpa"
-					}
-
-				@socket.on "data", (buffer)=>
-
-					received = buffer.toString()
-					expect(received).toEqual expected
-					done()
-
-				@socket.write "search h"
+				@socket.write "getTorrentIndex"
