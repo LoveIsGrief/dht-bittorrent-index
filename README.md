@@ -58,18 +58,13 @@ Commands look simply like shell commands:
 
 	<command> [args]
 
-### search <query>
+### getTorrentIndex [format=JSON]
 
-Attempts to find a torrent with a given name.
-A query language should (maybe will) be chosen to best service clients.
+Returns the node's index of **torrents** in a given format (JSON is the default).
 
-### getNodeIndex <format=JSON>
+### getNodeIndex [format=JSON]
 
-Returns the node's index of torrents in a given format (JSON is the default).
-
-### getNodesIndex <format=JSON>
-
-Returns the node's index of nodes in a given format (JSON is the default).
+Returns the node's index of **nodes** in a given format (JSON is the default).
 
 This is the list index/list of nodes known to the node. It should be regularly checked for dead nodes,
 either by the node returning the index of the node requesting it.
