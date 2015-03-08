@@ -87,6 +87,9 @@ describe "DhtNode", ->
 			beforeEach ->
 				@node = new DhtNode
 
+			afterEach (done)->
+				@node.end().finally done
+
 			it "should return a promise", ->
 				promise = @node.start()
 				expect(promise).toBePromise()
@@ -95,7 +98,7 @@ describe "DhtNode", ->
 				@node.start("localhost", 9999)
 				.then done
 
-			it "should successfully create a server and reject promise", (done)->
+			it "should fail to create a server and reject the promise", (done)->
 				# Port 80 is a priliged port
 				@node.start("localhost", 80)
 				.catch done
