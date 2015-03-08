@@ -88,5 +88,9 @@ describe "DhtNode", ->
 				@node = new DhtNode
 
 			it "should return a promise", ->
-				promise = @node.start("localhost", 9999)
+				promise = @node.start()
 				expect(promise).toBePromise()
+
+			it "should successfully create a server", (done)->
+				@node.start("localhost", 9999)
+				.then done
