@@ -52,6 +52,9 @@ class DhtNode
 				logger.debug "[#{socketString}]Got input data: ", input
 				@commander.parseCommand input
 
+		# Promise.catch on error
+		@server.on "error", deferred.reject
+
 		# Actually creates the server
 		@server.listen @port, @interface, ->
 			callback() if callback
