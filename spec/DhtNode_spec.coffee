@@ -1,10 +1,22 @@
 net = require "net"
 log4js = require "log4js"
+Q = require "q"
 DhtNode = require "../src/DhtNode"
 config = require "../config/config"
 
 logger = log4js.getLogger "DhtNode_spec"
 logger.setLevel config.logLevel
+
+# https://jasmine.github.io/2.0/custom_matcher.html
+customMatchers =
+
+	toBeInstanceOf: (util, customEqualityTesters)->
+		compare: (actual, expected)->
+			pass: (actual instanceof expected)
+
+	toBePromise: (util, customEqualityTesters)->
+		compare: (actual, expected)->
+			pass: (Q.isPromise actual)
 
 describe "DhtNode", ->
 
@@ -24,6 +36,9 @@ describe "DhtNode", ->
 		}
 		return node
 
+	beforeEach ->
+		jasmine.addMatchers customMatchers
+
 	describe "network" , ->
 
 		describe "forever alone" , ->
@@ -33,10 +48,10 @@ describe "DhtNode", ->
 				@ip = "localhost"
 				@port = 9000
 				@node = createNode()
-				@node.start @ip, @port, =>
+				@node.start(@ip, @port)
+				.then =>
 					@socket = net.connect { port: @port}, =>
 						done()
-
 
 			# Disconnect client and server
 			afterEach (done)->
@@ -64,3 +79,47 @@ describe "DhtNode", ->
 					done()
 
 				@socket.write "getNodeIndex"
+
+	describe "promises" , ->
+
+		describe "when starting", ->
+
+			beforeEach ->
+				@node = new DhtNode
+
+			afterEach (done)->
+				@node.end().finally done
+
+			it "should return a promise", ->
+				promise = @node.start()
+				expect(promise).toBePromise()
+
+			it "should successfully create a server and resolve promise", (done)->
+				@node.start("localhost", 9999)
+				.then done
+
+			it "should fail to create a server and reject the promise", (done)->
+				# Port 80 is a priliged port
+				@node.start("localhost", 80)
+				.catch done
+
+		describe "when ending" , ->
+
+			beforeEach ->
+				@node = new DhtNode
+
+			it "should return a promise", ->
+				expect(@node.end()).toBePromise()
+
+			it "should promise failure when no server exists", (done)->
+				@node.end().catch done
+
+			it "should promise success when a server exists", (done)->
+				@node.start("localhost", 9999)
+				.then =>
+					logger.debug "Server started"
+					@node.end()
+				.then done
+
+			xit "should promise success ", ->
+

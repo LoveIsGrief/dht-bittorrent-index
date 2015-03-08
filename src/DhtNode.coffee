@@ -5,6 +5,7 @@ DhtNodeCommander = require "./DhtNodeCommander"
 functional = require "./functional"
 log4js = require "log4js"
 net = require "net"
+Q = require "q"
 
 logger = log4js.getLogger("DhtNode")
 logger.setLevel config.logLevel
@@ -20,19 +21,19 @@ class DhtNode
 		@commander = null
 
 	###
-	Starts the server on the given interface and port
+	Promises to start the server on the given interface and port
 
 	Configures it to attempt to execute commands and
 	return their results in JSON format
 
 	@param interface {String} Which interface to listen on
 	@param port {Integer} Which port to listen on
-	@param callback {Object} To call once the server is listening
 	###
-	start: (@interface,@port, callback)->
+	start: (@interface,@port)->
 
+		deferred = Q.defer()
 		@commander = new DhtNodeCommander @
-		logger.debug "Going to create a server"
+		logger.debug "Going to create a server #{@interface}:#{@port}"
 		@server = net.createServer (socket)=>
 
 			socketString = "#{socket.remoteAddress}:#{socket.remotePort}"
@@ -50,19 +51,38 @@ class DhtNode
 				logger.debug "[#{socketString}]Got input data: ", input
 				@commander.parseCommand input
 
+		# Promise.catch on error
+		@server.on "error", deferred.reject
+
+		# Actually creates the server
 		@server.listen @port, @interface, ->
-			callback()
 			logger.debug "Created server"
+			deferred.resolve()
+
+		deferred.promise
 
 
+	###
+	Promises to end the server.
+	###
 	end: ->
-		if @server
+		deferred = Q.defer()
+		if @server and @server.address()
 			serverString = @server.address()
 			serverString = "#{serverString.address}:#{serverString.port}"
 			@server.on "close", =>
+				delete @server
 				logger.debug "Closed server: ", serverString
+				deferred.resolve()
 			@server.close()
 			logger.debug "Waiting for server to close..."
+
+		else
+			setTimeout ->
+				deferred.reject "Server doesn't exist"
+			, 1
+
+		deferred.promise
 
 	###
 	Searches the map keys for the given keys
