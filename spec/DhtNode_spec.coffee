@@ -107,3 +107,6 @@ describe "DhtNode", ->
 
 			it "should return a promise", ->
 				expect(@node.end()).toBePromise()
+
+			it "should promise failure when no server exists", (done)->
+				@node.end().catch done

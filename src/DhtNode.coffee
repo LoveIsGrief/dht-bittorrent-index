@@ -74,6 +74,11 @@ class DhtNode
 			@server.close()
 			logger.debug "Waiting for server to close..."
 
+		else
+			setTimeout ->
+				deferred.reject "Server doesn't exist"
+			, 1
+
 		deferred.promise
 
 	###
