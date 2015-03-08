@@ -65,6 +65,7 @@ class DhtNode
 
 
 	end: ->
+		deferred = Q.defer()
 		if @server
 			serverString = @server.address()
 			serverString = "#{serverString.address}:#{serverString.port}"
@@ -72,6 +73,8 @@ class DhtNode
 				logger.debug "Closed server: ", serverString
 			@server.close()
 			logger.debug "Waiting for server to close..."
+
+		deferred.promise
 
 	###
 	Searches the map keys for the given keys

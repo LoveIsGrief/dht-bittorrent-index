@@ -82,7 +82,7 @@ describe "DhtNode", ->
 
 	describe "promises" , ->
 
-		describe "when start", ->
+		describe "when starting", ->
 
 			beforeEach ->
 				@node = new DhtNode
@@ -99,3 +99,11 @@ describe "DhtNode", ->
 				# Port 80 is a priliged port
 				@node.start("localhost", 80)
 				.catch done
+
+		describe "when ending" , ->
+
+			beforeEach ->
+				@node = new DhtNode
+
+			it "should return a promise", ->
+				expect(@node.end()).toBePromise()
