@@ -30,7 +30,7 @@ class DhtNode
 	@param port {Integer} Which port to listen on
 	@param callback {Object} To call once the server is listening
 	###
-	start: (@interface,@port, callback)->
+	start: (@interface,@port)->
 
 		deferred = Q.defer()
 		@commander = new DhtNodeCommander @
@@ -57,7 +57,6 @@ class DhtNode
 
 		# Actually creates the server
 		@server.listen @port, @interface, ->
-			callback() if callback
 			logger.debug "Created server"
 			deferred.resolve()
 
