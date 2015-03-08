@@ -48,10 +48,10 @@ describe "DhtNode", ->
 				@ip = "localhost"
 				@port = 9000
 				@node = createNode()
-				@node.start @ip, @port, =>
+				@node.start(@ip, @port)
+				.then =>
 					@socket = net.connect { port: @port}, =>
 						done()
-
 
 			# Disconnect client and server
 			afterEach (done)->
