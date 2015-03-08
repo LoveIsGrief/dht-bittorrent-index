@@ -1,10 +1,22 @@
 net = require "net"
 log4js = require "log4js"
+Q = require "q"
 DhtNode = require "../src/DhtNode"
 config = require "../config/config"
 
 logger = log4js.getLogger "DhtNode_spec"
 logger.setLevel config.logLevel
+
+# https://jasmine.github.io/2.0/custom_matcher.html
+customMatchers =
+
+	toBeInstanceOf: (util, customEqualityTesters)->
+		compare: (actual, expected)->
+			pass: (actual instanceof expected)
+
+	toBePromise: (util, customEqualityTesters)->
+		compare: (actual, expected)->
+			pass: (Q.isPromise actual)
 
 describe "DhtNode", ->
 
@@ -23,6 +35,9 @@ describe "DhtNode", ->
 			"isohunt.com": 9999
 		}
 		return node
+
+	beforeEach ->
+		jasmine.addMatchers customMatchers
 
 	describe "network" , ->
 
