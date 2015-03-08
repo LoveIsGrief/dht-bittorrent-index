@@ -113,3 +113,10 @@ describe "DhtNode", ->
 
 			it "should promise failure when no server exists", (done)->
 				@node.end().catch done
+
+			it "should promise success when a server exists", (done)->
+				@node.start("localhost", 9999)
+				.then =>
+					logger.debug "Server started"
+					@node.end().then done
+
