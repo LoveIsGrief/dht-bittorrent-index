@@ -79,3 +79,14 @@ describe "DhtNode", ->
 					done()
 
 				@socket.write "getNodeIndex"
+
+	describe "promises" , ->
+
+		describe "when start", ->
+
+			beforeEach ->
+				@node = new DhtNode
+
+			it "should return a promise", ->
+				promise = @node.start("localhost", 9999)
+				expect(promise).toBePromise()

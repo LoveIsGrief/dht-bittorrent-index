@@ -5,6 +5,7 @@ DhtNodeCommander = require "./DhtNodeCommander"
 functional = require "./functional"
 log4js = require "log4js"
 net = require "net"
+Q = require "q"
 
 logger = log4js.getLogger("DhtNode")
 logger.setLevel config.logLevel
@@ -31,6 +32,7 @@ class DhtNode
 	###
 	start: (@interface,@port, callback)->
 
+		deferred = Q.defer()
 		@commander = new DhtNodeCommander @
 		logger.debug "Going to create a server"
 		@server = net.createServer (socket)=>
@@ -53,6 +55,8 @@ class DhtNode
 		@server.listen @port, @interface, ->
 			callback()
 			logger.debug "Created server"
+
+		deferred.promise
 
 
 	end: ->
