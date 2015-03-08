@@ -21,14 +21,13 @@ class DhtNode
 		@commander = null
 
 	###
-	Starts the server on the given interface and port
+	Promises to start the server on the given interface and port
 
 	Configures it to attempt to execute commands and
 	return their results in JSON format
 
 	@param interface {String} Which interface to listen on
 	@param port {Integer} Which port to listen on
-	@param callback {Object} To call once the server is listening
 	###
 	start: (@interface,@port)->
 
@@ -63,6 +62,9 @@ class DhtNode
 		deferred.promise
 
 
+	###
+	Promises to end the server.
+	###
 	end: ->
 		deferred = Q.defer()
 		if @server and @server.address()
