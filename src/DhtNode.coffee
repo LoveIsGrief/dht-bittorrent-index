@@ -34,7 +34,7 @@ class DhtNode
 
 		deferred = Q.defer()
 		@commander = new DhtNodeCommander @
-		logger.debug "Going to create a server"
+		logger.debug "Going to create a server #{@interface}:#{@port}"
 		@server = net.createServer (socket)=>
 
 			socketString = "#{socket.remoteAddress}:#{socket.remotePort}"
