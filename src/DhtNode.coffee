@@ -66,11 +66,13 @@ class DhtNode
 
 	end: ->
 		deferred = Q.defer()
-		if @server
+		if @server and @server.address()
 			serverString = @server.address()
 			serverString = "#{serverString.address}:#{serverString.port}"
 			@server.on "close", =>
+				delete @server
 				logger.debug "Closed server: ", serverString
+				deferred.resolve()
 			@server.close()
 			logger.debug "Waiting for server to close..."
 
