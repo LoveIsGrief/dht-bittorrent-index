@@ -52,9 +52,11 @@ class DhtNode
 				logger.debug "[#{socketString}]Got input data: ", input
 				@commander.parseCommand input
 
+		# Actually creates the server
 		@server.listen @port, @interface, ->
-			callback()
+			callback() if callback
 			logger.debug "Created server"
+			deferred.resolve()
 
 		deferred.promise
 
