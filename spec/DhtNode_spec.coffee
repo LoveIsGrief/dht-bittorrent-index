@@ -91,6 +91,11 @@ describe "DhtNode", ->
 				promise = @node.start()
 				expect(promise).toBePromise()
 
-			it "should successfully create a server", (done)->
+			it "should successfully create a server and resolve promise", (done)->
 				@node.start("localhost", 9999)
 				.then done
+
+			it "should successfully create a server and reject promise", (done)->
+				# Port 80 is a priliged port
+				@node.start("localhost", 80)
+				.catch done
