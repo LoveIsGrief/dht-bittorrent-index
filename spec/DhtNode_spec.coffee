@@ -118,5 +118,8 @@ describe "DhtNode", ->
 				@node.start("localhost", 9999)
 				.then =>
 					logger.debug "Server started"
-					@node.end().then done
+					@node.end()
+				.then done
+
+			xit "should promise success ", ->
 
